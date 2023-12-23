@@ -46,18 +46,24 @@ module processor
     // PC MUX
     mux_2x1 mux_2x1_pc
     (
+        // inputs
         .in_0        ( pc_out + 32'd4 ),
         .in_1        ( opr_res        ),
         .select_line ( br_take        ),
+
+        // outputs
         .out         ( new_pc         )
     );
 
 
     mux_2x1 mux_2x1_epc
     (
+        // inputs
         .in_0        ( new_pc    ),
         .in_1        ( epc       ),
         .select_line ( epc_taken ),
+
+        // outputs
         .out         ( epc_pc    ) 
     );
 
@@ -65,9 +71,12 @@ module processor
     // program counter
     pc pc_i
     (
+        // inputs
         .clk   ( clk            ),
         .rst   ( rst            ),
         .pc_in ( epc_pc         ),
+
+        //outputs
         .pc_out( pc_out         )
     );
 
@@ -75,7 +84,10 @@ module processor
     // instruction memory
     inst_mem inst_mem_i
     (
+        // inputs
         .addr  ( pc_out         ),
+
+        // outputs
         .data  ( inst           )
     );
 
@@ -89,7 +101,10 @@ module processor
     // instruction decoder
     inst_dec inst_dec_i
     (
+        // inputs
         .inst  ( inst           ),
+
+        // outputs
         .rs1   ( rs1            ),
         .rs2   ( rs2            ),
         .rd    ( rd             ),
@@ -102,24 +117,30 @@ module processor
     // register file
     reg_file reg_file_i
     (
+        // inputs
         .clk   ( clk            ),
         .rf_en ( rf_en          ),
-        .rd    ( rd             ),
         .rs1   ( rs1            ),
         .rs2   ( rs2            ),
+        .rd    ( rd             ),
+        .wdata ( wdata          ),
+
+        // outputs
         .rdata1( rdata1         ),
-        .rdata2( rdata2         ),
-        .wdata ( wdata          )
+        .rdata2( rdata2         )
     );
 
 
     // controller
     controller controller_i
     (
+        // inputs
         .opcode         ( opcode         ),
         .funct3         ( funct3         ),
         .funct7         ( funct7         ),
         .br_taken       ( br_taken       ),
+
+        // outputs
         .aluop          ( aluop          ),
         .rf_en          ( rf_en          ),
         .sel_a          ( sel_a          ),
@@ -139,7 +160,10 @@ module processor
     // immediate generator
     imm_gen imm_gen_i
     (
+        // inputs
         .inst   ( inst          ),
+
+        // outputs
         .imm_val( imm_val       )
     );
 
@@ -147,9 +171,12 @@ module processor
     // ALU opr_a MUX
     mux_2x1 mux_2x1_alu_opr_a
     (
+        // inputs
         .in_0           ( pc_out  ),
         .in_1           ( rdata1  ),
         .select_line    ( sel_a   ),
+
+        // outputs
         .out            ( opr_a   )
     );
 
@@ -157,9 +184,12 @@ module processor
     // ALU opr_b MUX
     mux_2x1 mux_2x1_alu_opr_b
     (
+        // inputs
         .in_0           ( rdata2  ),
         .in_1           ( imm_val ),
         .select_line    ( sel_b   ),
+
+        // outputs
         .out            ( opr_b   )
     );
 
@@ -167,9 +197,12 @@ module processor
     // ALU
     alu alu_i
     (
+        // inputs
         .aluop   ( aluop          ),
         .opr_a   ( opr_a          ),
         .opr_b   ( opr_b          ),
+
+        // outputs
         .opr_res ( opr_res        )
     );
 
@@ -177,9 +210,12 @@ module processor
     // br_cond
     br_cond br_cond_i
     (
+        // inputs
         .rdata1   ( rdata1   ),
         .rdata2   ( rdata2   ),
         .br_type  ( br_type  ),
+
+        // outputs
         .br_taken ( br_taken )
     );
 
@@ -193,12 +229,15 @@ module processor
     // data memory
     data_mem data_mem_i
     (
+        // inputs
         .clk            ( clk          ),
         .rd_en          ( rd_en        ),
         .wr_en          ( wr_en        ),
         .addr           ( opr_res      ),
         .mem_acc_mode   ( mem_acc_mode ),
         .rdata2         ( rdata2       ),
+
+        // outputs
         .rdata          ( rdata        )
     );
 
@@ -206,6 +245,7 @@ module processor
     // csr 
     csr_reg csr_reg_i
     (
+        // inputs
         .clk       ( clk             ),
         .rst       ( rst             ),
         .addr      ( imm_val         ),
@@ -216,6 +256,8 @@ module processor
         .csr_wr    ( csr_wr          ),
         .is_mret   ( is_mret         ),
         .inst      ( inst            ),
+
+        // outputs
         .rdata     ( csr_rdata       ),
         .epc       ( epc             ),
         .epc_taken ( epc_taken       )
@@ -225,11 +267,14 @@ module processor
     // Writeback MUX
     mux_4x1 wb_mux
     (
+        // inputs
         .in_0           ( pc_out + 32'd4 ),
         .in_1           ( opr_res        ),
         .in_2           ( rdata          ),
         .in_3           ( csr_rdata      ),
         .select_line    ( wb_sel         ),
+
+        // outputs
         .out            ( wdata          )
     );
 

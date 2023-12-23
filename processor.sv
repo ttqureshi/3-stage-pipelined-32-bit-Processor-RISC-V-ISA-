@@ -41,6 +41,7 @@ module processor
     logic        epc_taken;
     logic [31:0] epc_pc;
 
+    // --------------------- Instruction Fetch (IF) ---------------------
 
     // PC MUX
     mux_2x1 mux_2x1_pc
@@ -78,6 +79,12 @@ module processor
         .data  ( inst           )
     );
 
+    // ---------------------------------------------------------------
+
+    // IF <-> DE Buffer
+
+    // --------------------- Decode-Execute (DE) ---------------------
+
 
     // instruction decoder
     inst_dec inst_dec_i
@@ -103,6 +110,29 @@ module processor
         .rdata1( rdata1         ),
         .rdata2( rdata2         ),
         .wdata ( wdata          )
+    );
+
+
+    // controller
+    controller controller_i
+    (
+        .opcode         ( opcode         ),
+        .funct3         ( funct3         ),
+        .funct7         ( funct7         ),
+        .br_taken       ( br_taken       ),
+        .aluop          ( aluop          ),
+        .rf_en          ( rf_en          ),
+        .sel_a          ( sel_a          ),
+        .sel_b          ( sel_b          ),
+        .rd_en          ( rd_en          ),
+        .wr_en          ( wr_en          ),
+        .wb_sel         ( wb_sel         ),
+        .mem_acc_mode   ( mem_acc_mode   ),
+        .br_type        ( br_type        ),
+        .br_take        ( br_take        ),
+        .csr_rd         ( csr_rd         ),
+        .csr_wr         ( csr_wr         ),
+        .is_mret        ( is_mret        )
     );
 
 
@@ -133,6 +163,17 @@ module processor
         .out            ( opr_b   )
     );
 
+
+    // ALU
+    alu alu_i
+    (
+        .aluop   ( aluop          ),
+        .opr_a   ( opr_a          ),
+        .opr_b   ( opr_b          ),
+        .opr_res ( opr_res        )
+    );
+
+
     // br_cond
     br_cond br_cond_i
     (
@@ -142,15 +183,11 @@ module processor
         .br_taken ( br_taken )
     );
 
+    // ---------------------------------------------------------------
+    
+    // DE <-> MEM-WB Buffer
 
-    // alu
-    alu alu_i
-    (
-        .aluop   ( aluop          ),
-        .opr_a   ( opr_a          ),
-        .opr_b   ( opr_b          ),
-        .opr_res ( opr_res        )
-    );
+    // // --------------------- Memory-Writeback ---------------------
 
 
     // data memory
@@ -196,28 +233,8 @@ module processor
         .out            ( wdata          )
     );
 
+    // ---------------------------------------------------------------
 
-    // controller
-    controller controller_i
-    (
-        .opcode         ( opcode         ),
-        .funct3         ( funct3         ),
-        .funct7         ( funct7         ),
-        .br_taken       ( br_taken       ),
-        .aluop          ( aluop          ),
-        .rf_en          ( rf_en          ),
-        .sel_a          ( sel_a          ),
-        .sel_b          ( sel_b          ),
-        .rd_en          ( rd_en          ),
-        .wr_en          ( wr_en          ),
-        .wb_sel         ( wb_sel         ),
-        .mem_acc_mode   ( mem_acc_mode   ),
-        .br_type        ( br_type        ),
-        .br_take        ( br_take        ),
-        .csr_rd         ( csr_rd         ),
-        .csr_wr         ( csr_wr         ),
-        .is_mret        ( is_mret        )
-    );
 
     
 endmodule

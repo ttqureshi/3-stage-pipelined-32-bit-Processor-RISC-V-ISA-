@@ -27,6 +27,8 @@ module imm_gen
                 imm_val = $signed({inst[31], inst[19:12], inst[20], inst[30:21], 1'b0});
             7'b1100111: // I-type (JALR)
                 imm_val = $signed(inst[31:20]);
+            7'b0000011: // Load Instruction
+                imm_val = {20'b0, inst[31:20]};
         endcase
     end
 

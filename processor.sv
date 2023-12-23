@@ -7,9 +7,19 @@ module processor
     // wires
     logic        rf_en;
     logic        sel_b;
+
+    // pc_out
     logic [31:0] pc_out;
+    logic [31:0] pc_out_if;
+    logic [31:0] pc_out_de;
+
     logic [31:0] new_pc;
+
+    // inst
     logic [31:0] inst;
+    logic [31:0] inst_if;
+    logic [31:0] inst_de;
+
     logic [ 4:0] rd;
     logic [ 4:0] rs1;
     logic [ 4:0] rs2;
@@ -47,7 +57,7 @@ module processor
     mux_2x1 mux_2x1_pc
     (
         // inputs
-        .in_0        ( pc_out + 32'd4 ),
+        .in_0        ( pc_out_if + 32'd4 ),
         .in_1        ( opr_res        ),
         .select_line ( br_take        ),
 
@@ -77,7 +87,7 @@ module processor
         .pc_in ( epc_pc         ),
 
         //outputs
-        .pc_out( pc_out         )
+        .pc_out( pc_out_if      )
     );
 
 
@@ -85,15 +95,28 @@ module processor
     inst_mem inst_mem_i
     (
         // inputs
-        .addr  ( pc_out         ),
+        .addr  ( pc_out_if      ),
 
         // outputs
-        .data  ( inst           )
+        .data  ( inst_if        )
     );
 
     // ---------------------------------------------------------------
 
     // IF <-> DE Buffer
+    always_ff @( posedge clk ) 
+    begin
+        if ( rst )
+        begin
+            pc_out_de <= 0;
+            inst_de  <= 0;
+        end
+        else
+        begin
+            pc_out_de <= pc_out_if; // PC 
+            inst_de   <= inst_if;   // instruction 
+        end
+    end
 
     // --------------------- Decode-Execute (DE) ---------------------
 
@@ -102,7 +125,7 @@ module processor
     inst_dec inst_dec_i
     (
         // inputs
-        .inst  ( inst           ),
+        .inst  ( inst_de        ),
 
         // outputs
         .rs1   ( rs1            ),
@@ -161,7 +184,7 @@ module processor
     imm_gen imm_gen_i
     (
         // inputs
-        .inst   ( inst          ),
+        .inst   ( inst_de       ),
 
         // outputs
         .imm_val( imm_val       )
@@ -172,12 +195,12 @@ module processor
     mux_2x1 mux_2x1_alu_opr_a
     (
         // inputs
-        .in_0           ( pc_out  ),
-        .in_1           ( rdata1  ),
-        .select_line    ( sel_a   ),
+        .in_0           ( pc_out_de  ),
+        .in_1           ( rdata1     ),
+        .select_line    ( sel_a      ),
 
         // outputs
-        .out            ( opr_a   )
+        .out            ( opr_a      )
     );
 
 

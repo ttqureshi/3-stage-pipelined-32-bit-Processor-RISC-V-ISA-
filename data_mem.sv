@@ -5,7 +5,7 @@ module data_mem
     input  logic        wr_en,
     input  logic [31:0] addr,
     input  logic [ 2:0] mem_acc_mode,
-    input  logic [31:0] rdata2,
+    input  logic [31:0] wdata,
     output logic [31:0] rdata
 );
     parameter BYTE              = 3'b000;
@@ -45,18 +45,18 @@ module data_mem
         begin
             case (mem_acc_mode)
             BYTE:
-                data_mem[addr] <= rdata2[7:0];
+                data_mem[addr] <= wdata[7:0];
             HALFWORD:
                 begin
-                    data_mem[addr  ] <= rdata2[15:8];
-                    data_mem[addr+1] <= rdata2[ 7:0];
+                    data_mem[addr  ] <= wdata[15:8];
+                    data_mem[addr+1] <= wdata[ 7:0];
                 end
             WORD:
                 begin
-                    data_mem[addr  ] <= rdata2[31:24];
-                    data_mem[addr+1] <= rdata2[23:16];
-                    data_mem[addr+2] <= rdata2[15: 8];
-                    data_mem[addr+3] <= rdata2[ 7: 0];
+                    data_mem[addr  ] <= wdata[31:24];
+                    data_mem[addr+1] <= wdata[23:16];
+                    data_mem[addr+2] <= wdata[15: 8];
+                    data_mem[addr+3] <= wdata[ 7: 0];
                 end
             endcase
         end

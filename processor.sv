@@ -19,7 +19,6 @@ module processor
     logic [31:0] inst_MW;
 
     logic [ 4:0] waddr;
-    logic [ 4:0] rd;
     logic [ 4:0] rs1;
     logic [ 4:0] rs2;
     logic [ 6:0] opcode;
@@ -186,7 +185,6 @@ module processor
         // outputs
         .rs1   ( rs1            ),
         .rs2   ( rs2            ),
-        .rd    ( rd             ),
         .opcode( opcode         ),
         .funct3( funct3         ),
         .funct7( funct7         )
@@ -362,10 +360,10 @@ module processor
         .wr_en          ( wr_en_MW        ),
         .addr           ( opr_res_MW      ),
         .mem_acc_mode   ( mem_acc_mode_MW ),
-        .rdata2         ( rdata2_MW       ),
+        .wdata          ( rdata2_MW       ),
 
         // outputs
-        .rdata          ( rdata        )
+        .rdata          ( rdata           )
     );
 
 
@@ -379,15 +377,15 @@ module processor
         .wdata     ( rdata1_MW       ),
         .pc        ( pc_out_MW       ),
         .trap      ( timer_interrupt ),
-        .csr_rd    ( csr_rd_MW          ),
-        .csr_wr    ( csr_wr_MW          ),
-        .is_mret   ( is_mret_MW         ),
-        .inst      ( inst_MW            ),
+        .csr_rd    ( csr_rd_MW       ),
+        .csr_wr    ( csr_wr_MW       ),
+        .is_mret   ( is_mret_MW      ),
+        .inst      ( inst_MW         ),
 
         // outputs
         .rdata     ( csr_rdata       ),
-        .epc       ( epc_MW             ),
-        .epc_taken ( epc_taken_MW       )
+        .epc       ( epc_MW          ),
+        .epc_taken ( epc_taken_MW    )
     );
 
 

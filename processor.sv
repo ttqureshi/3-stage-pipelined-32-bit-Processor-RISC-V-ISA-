@@ -412,8 +412,13 @@ module processor
     begin
         epc_IF       = epc_MW;
         epc_taken_IF = epc_taken_MW;
-        wdata_DE     = wdata_MW;
+    end
+
+    // Feedback to DE stage
+    always_comb
+    begin
         waddr        = inst_MW[11:7];
+        wdata_DE     = wdata_MW;
     end
     
 endmodule

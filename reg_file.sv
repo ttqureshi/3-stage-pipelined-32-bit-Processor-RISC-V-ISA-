@@ -20,7 +20,7 @@ module reg_file
     end
 
     // synchronus write
-    always_ff @(posedge clk) 
+    always_ff @(negedge clk) 
     begin
         if(rf_en)
         begin

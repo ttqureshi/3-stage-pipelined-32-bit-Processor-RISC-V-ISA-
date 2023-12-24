@@ -19,8 +19,19 @@ module processor
     logic [31:0] inst_MW;
 
     logic [ 4:0] waddr;
-    logic [ 4:0] rs1;
-    logic [ 4:0] rs2;
+
+    // rs1
+    logic [ 4:0] rs1_DE;
+    logic [ 4:0] rs1_MW;
+
+    // rs2
+    logic [ 4:0] rs2_DE;
+    logic [ 4:0] rs2_MW;
+
+    // rd
+    logic [ 4:0] rd_DE;
+    logic [ 4:0] rd_MW;
+
     logic [ 6:0] opcode;
     logic [ 2:0] funct3;
     logic [ 6:0] funct7;
@@ -105,6 +116,12 @@ module processor
     logic        epc_taken_MW;
 
     logic [31:0] epc_pc;
+    logic [31:0] forward_opr_a;
+    logic [31:0] forward_opr_b;
+    logic        forward_a;
+    logic        forward_b;
+    logic        stall_IF;
+    logic        flush_DE;
 
     // --------------------- Instruction Fetch (IF) ---------------------
 
@@ -120,7 +137,6 @@ module processor
         .out         ( new_pc         )
     );
 
-
     mux_2x1 mux_2x1_epc
     (
         // inputs
@@ -132,19 +148,18 @@ module processor
         .out         ( epc_pc       ) 
     );
 
-
     // program counter
     pc pc_i
     (
         // inputs
         .clk   ( clk            ),
         .rst   ( rst            ),
+        .en    ( ~stall_IF      ),
         .pc_in ( epc_pc         ),
 
         //outputs
         .pc_out( pc_out_IF      )
     );
-
 
     // instruction memory
     inst_mem inst_mem_i
@@ -161,7 +176,7 @@ module processor
     // IF <-> DE Buffer
     always_ff @( posedge clk ) 
     begin
-        if ( rst )
+        if ( rst | flush_DE )
         begin
             pc_out_DE <= 0;
             inst_DE  <= 0;
@@ -175,7 +190,6 @@ module processor
 
     // --------------------- Decode-Execute (DE) ---------------------
 
-
     // instruction decoder
     inst_dec inst_dec_i
     (
@@ -183,13 +197,13 @@ module processor
         .inst  ( inst_DE        ),
 
         // outputs
-        .rs1   ( rs1            ),
-        .rs2   ( rs2            ),
+        .rs1   ( rs1_DE         ),
+        .rs2   ( rs2_DE         ),
+        .rd    ( rd_DE          ),
         .opcode( opcode         ),
         .funct3( funct3         ),
         .funct7( funct7         )
     );
-
 
     // register file
     reg_file reg_file_i
@@ -197,8 +211,8 @@ module processor
         // inputs
         .clk   ( clk            ),
         .rf_en ( rf_en_MW       ),
-        .rs1   ( rs1            ),
-        .rs2   ( rs2            ),
+        .rs1   ( rs1_DE         ),
+        .rs2   ( rs2_DE         ),
         .rd    ( waddr          ),
         .wdata ( wdata_DE       ),
 
@@ -206,7 +220,6 @@ module processor
         .rdata1( rdata1_DE      ),
         .rdata2( rdata2_DE      )
     );
-
 
     // controller
     controller controller_i
@@ -233,7 +246,6 @@ module processor
         .is_mret        ( is_mret_DE      )
     );
 
-
     // immediate generator
     imm_gen imm_gen_i
     (
@@ -244,32 +256,55 @@ module processor
         .imm_val( imm_val_DE    )
     );
 
+    // forward_a
+    always_comb
+    begin
+        if (forward_a)
+        begin
+            forward_opr_a = opr_res_MW;
+        end
+        else
+        begin
+            forward_opr_a = rdata1_DE;
+        end
+    end
+
+    // forward_b
+    always_comb
+    begin
+        if (forward_b)
+        begin
+            forward_opr_b = opr_res_MW;
+        end
+        else
+        begin
+            forward_opr_b = rdata2_DE;
+        end
+    end
 
     // ALU opr_a MUX
     mux_2x1 mux_2x1_alu_opr_a
     (
         // inputs
-        .in_0           ( pc_out_DE  ),
-        .in_1           ( rdata1_DE  ),
-        .select_line    ( sel_a      ),
+        .in_0           ( pc_out_DE     ),
+        .in_1           ( forward_opr_a ),
+        .select_line    ( sel_a         ),
 
         // outputs
-        .out            ( opr_a      )
+        .out            ( opr_a         )
     );
-
 
     // ALU opr_b MUX
     mux_2x1 mux_2x1_alu_opr_b
     (
         // inputs
-        .in_0           ( rdata2_DE  ),
-        .in_1           ( imm_val_DE ),
-        .select_line    ( sel_b      ),
+        .in_0           ( forward_opr_b ),
+        .in_1           ( imm_val_DE    ),
+        .select_line    ( sel_b         ),
 
         // outputs
-        .out            ( opr_b      )
+        .out            ( opr_b         )
     );
-
 
     // ALU
     alu alu_i
@@ -282,7 +317,6 @@ module processor
         // outputs
         .opr_res ( opr_res_DE     )
     );
-
 
     // br_cond
     br_cond br_cond_i
@@ -316,6 +350,9 @@ module processor
             rdata1_MW       <= 0;
             rdata2_MW       <= 0;
             imm_val_MW      <= 0;
+            rs1_MW          <= 0;
+            rs2_MW          <= 0;
+            rd_MW           <= 0;
 
             // control signals
             rf_en_MW        <= 0;
@@ -335,6 +372,9 @@ module processor
             rdata1_MW       <= rdata1_DE;
             rdata2_MW       <= rdata2_DE;
             imm_val_MW      <= imm_val_DE;
+            rs1_MW          <= rs1_DE;
+            rs2_MW          <= rs2_DE;
+            rd_MW           <= rd_DE;
 
             // control signals
             rf_en_MW        <= rf_en_DE;
@@ -350,7 +390,6 @@ module processor
 
     // ----------------------- Memory-Writeback ----------------------
 
-
     // data memory
     data_mem data_mem_i
     (
@@ -365,7 +404,6 @@ module processor
         // outputs
         .rdata          ( rdata           )
     );
-
 
     // csr 
     csr_reg csr_reg_i
@@ -387,7 +425,6 @@ module processor
         .epc       ( epc_MW          ),
         .epc_taken ( epc_taken_MW    )
     );
-
 
     // Writeback MUX
     mux_4x1 wb_mux
@@ -418,5 +455,33 @@ module processor
         waddr        = inst_MW[11:7];
         wdata_DE     = wdata_MW;
     end
+
+    // ---------------------------------------------------------------
+
+    // ------------------------- Hazard Unit -------------------------
+    hazard_unit hazard_unit_i
+    (
+        // FORWARDING
+        // inputs
+        .rs1_DE    ( rs1_DE   ),
+        .rs2_DE    ( rs2_DE   ),
+        .rd_MW     ( rd_MW    ),
+        .rf_en_MW  ( rf_en_MW ),
+        // outputs
+        .forward_a ( forward_a ),
+        .forward_b ( forward_b ),
+
+        // STALLING
+        // inputs
+        .inst_IF   ( inst_IF   ),
+        .rd_DE     ( rd_DE     ),
+        .wb_sel_DE ( wb_sel_DE ),
+        // outputs
+        .stall_IF  ( stall_IF  ),
+        .flush_DE  ( flush_DE  )
+    );
     
 endmodule
+
+
+

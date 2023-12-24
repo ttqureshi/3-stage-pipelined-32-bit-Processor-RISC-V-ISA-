@@ -1,13 +1,27 @@
-00c00093
-01408113
-00100183
-0011f233
-0060f2b3
-00238433
+00c00413
+00200483
+00940c63
+00944663
+40940433
+ff5ff06f
+408484b3
+fedff06f
+00000013
 
-// addi x1, x0, 12
-// addi x2, x1, 20
-// lb x3, 1(x0)
-// and x4, x3, x1
-// and x5, x1, x6
-// add x8, x7, x2
+
+// addi x8 , x0 , 12
+// lb x9, 2(x0)
+// gcd:
+// beq x8 , x9 , stop
+// blt x8 , x9 , less
+// sub x8 , x8 , x9
+// j gcd
+// less:
+// sub x9 , x9 , x8
+// j gcd
+// stop:
+// nop
+
+
+
+

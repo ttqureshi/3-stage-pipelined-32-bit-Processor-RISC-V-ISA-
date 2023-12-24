@@ -8,10 +8,11 @@ module hazard_unit
     output logic        forward_a,
     output logic        forward_b,
 
-    // Stalling
+    // Stalling and Flusing 
     input  logic [31:0] inst_IF,
     input  logic [ 4:0] rd_DE,
     input  logic [ 1:0] wb_sel_DE,
+    input  logic        br_taken,
     output logic        stall_IF, // to PC register
     output logic        flush_DE // Flush DE stage
 );
@@ -68,7 +69,7 @@ module hazard_unit
             stall_lw = 1'b0;
         end
         stall_IF = stall_lw;
-        flush_DE = stall_lw;
+        flush_DE = stall_lw | br_taken;
     end
 
 endmodule

@@ -176,10 +176,15 @@ module processor
     // IF <-> DE Buffer
     always_ff @( posedge clk ) 
     begin
-        if ( rst | flush_DE )
+        if ( rst )
         begin
             pc_out_DE <= 0;
-            inst_DE  <= 0;
+            inst_DE   <= 0;
+        end
+        else if ( flush_DE )
+        begin
+            inst_DE   <= 32'h00000013;
+            pc_out_DE <= 0;
         end
         else
         begin
@@ -471,11 +476,12 @@ module processor
         .forward_a ( forward_a ),
         .forward_b ( forward_b ),
 
-        // STALLING
+        // STALLING & FLUSHING
         // inputs
-        .inst_IF   ( inst_IF   ),
-        .rd_DE     ( rd_DE     ),
-        .wb_sel_DE ( wb_sel_DE ),
+        .inst_IF   ( inst_IF    ),
+        .rd_DE     ( rd_DE      ),
+        .wb_sel_DE ( wb_sel_DE  ),
+        .br_taken  ( br_take_DE ),
         // outputs
         .stall_IF  ( stall_IF  ),
         .flush_DE  ( flush_DE  )

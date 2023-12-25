@@ -1,27 +1,38 @@
-00c00413
-00200483
-00940c63
-00944663
-40940433
+00a00593
+00100513
+00000293
+00200313
+0265c463
+00030393
+00038863
+00a282b3
+fff38393
 ff5ff06f
-408484b3
-fedff06f
-00000013
-
-
-// addi x8 , x0 , 12
-// lb x9, 2(x0)
-// gcd:
-// beq x8 , x9 , stop
-// blt x8 , x9 , less
-// sub x8 , x8 , x9
-// j gcd
-// less:
-// sub x9 , x9 , x8
-// j gcd
-// stop:
-// nop
+00028513
+00000293
+00130313
+fddff06f
+0000006f
 
 
 
 
+//    li x11, 10 # number =10
+//    li x10, 1 # factorial
+//    li x5, 0  # product
+//    li x6, 2  #i
+//loop: 
+//    bgt x6, x11, end
+//    addi x7, x6, 0
+//innerloop_start:
+//    beq x7, x0, innerloop_end
+//    add x5,x5,x10
+//    addi x7,x7,-1
+//    j innerloop_start
+//innerloop_end:
+//    addi x10,x5,0
+//    li  x5,0
+//    addi x6,x6,1
+//    j loop
+//end:
+//    j end

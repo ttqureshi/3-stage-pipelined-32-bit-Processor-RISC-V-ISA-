@@ -24,7 +24,7 @@ module tb_processor();
         clk = 0;
         forever 
         begin
-            #5 clk = ~clk;
+            #4 clk = ~clk;
         end
     end
 
@@ -34,7 +34,7 @@ module tb_processor();
         rst = 1;
         #10;
         rst = 0;
-        #1000;
+        #10000;
         $finish;
     end
 

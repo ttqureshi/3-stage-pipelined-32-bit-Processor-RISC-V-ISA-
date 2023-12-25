@@ -266,7 +266,14 @@ module processor
     begin
         if (forward_a)
         begin
-            forward_opr_a = opr_res_MW;
+            if (rf_en_MW)
+            begin
+                forward_opr_a = opr_res_MW;
+            end
+            else
+            begin
+                forward_opr_a = 0;
+            end
         end
         else
         begin
@@ -279,7 +286,14 @@ module processor
     begin
         if (forward_b)
         begin
-            forward_opr_b = opr_res_MW;
+            if (rf_en_MW)
+            begin
+                forward_opr_b = opr_res_MW;
+            end
+            else
+            begin
+                forward_opr_b = 0;
+            end
         end
         else
         begin

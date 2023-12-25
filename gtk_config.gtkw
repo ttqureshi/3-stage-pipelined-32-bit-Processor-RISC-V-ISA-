@@ -1,0 +1,93 @@
+[*]
+[*] GTKWave Analyzer v3.3.100 (w)1999-2019 BSI
+[*] Mon Dec 25 05:02:18 2023
+[*]
+[dumpfile] "C:\Users\T460\Documents\MTTQ\BSc. CE (UET)\Semester 7\Computer Architecture (Lab)\3-stage Pipelined Processor\processor.vcd"
+[dumpfile_mtime] "Mon Dec 25 05:00:53 2023"
+[dumpfile_size] 142391
+[savefile] "C:\Users\T460\Documents\MTTQ\BSc. CE (UET)\Semester 7\Computer Architecture (Lab)\3-stage Pipelined Processor\gtk_config.gtkw"
+[timestart] 35
+[size] 1920 1017
+[pos] -165 -165
+*-4.068486 95 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_processor.
+[sst_width] 211
+[signals_width] 182
+[sst_expanded] 1
+[sst_vpaned_height] 365
+@28
+tb_processor.dut.clk
+@200
+-IF Stage Signals
+@22
+[color] 7
+tb_processor.dut.pc_out_IF[31:0]
+[color] 5
+tb_processor.dut.inst_IF[31:0]
+tb_processor.dut.opr_res_IF[31:0]
+@28
+tb_processor.dut.br_take_IF
+tb_processor.dut.epc_taken_IF
+tb_processor.dut.stall_IF
+@200
+-DE Stage Signals
+@22
+[color] 7
+tb_processor.dut.pc_out_DE[31:0]
+[color] 5
+tb_processor.dut.inst_DE[31:0]
+tb_processor.dut.waddr[4:0]
+tb_processor.dut.wdata_DE[31:0]
+tb_processor.dut.imm_val_DE[31:0]
+tb_processor.dut.rdata1_DE[31:0]
+tb_processor.dut.rdata2_DE[31:0]
+@28
+tb_processor.dut.br_taken
+@22
+tb_processor.dut.forward_opr_a[31:0]
+@28
+tb_processor.dut.forward_a
+tb_processor.dut.sel_a
+@22
+tb_processor.dut.opr_a[31:0]
+tb_processor.dut.forward_opr_b[31:0]
+@28
+tb_processor.dut.forward_b
+@22
+tb_processor.dut.opr_b[31:0]
+@28
+tb_processor.dut.sel_b
+@22
+tb_processor.dut.opr_res_DE[31:0]
+tb_processor.dut.aluop[3:0]
+@28
+tb_processor.dut.rf_en_DE
+tb_processor.dut.rd_en_DE
+tb_processor.dut.wr_en_DE
+tb_processor.dut.wb_sel_DE[1:0]
+tb_processor.dut.br_type[2:0]
+tb_processor.dut.br_take_DE
+tb_processor.dut.flush_DE
+@200
+-MW Stage Signals
+@22
+[color] 7
+tb_processor.dut.pc_out_MW[31:0]
+[color] 5
+tb_processor.dut.inst_MW[31:0]
+tb_processor.dut.opr_res_MW[31:0]
+tb_processor.dut.rdata2_MW[31:0]
+@28
+tb_processor.dut.rd_en_MW
+tb_processor.dut.wr_en_MW
+@22
+tb_processor.dut.rdata[31:0]
+@28
+tb_processor.dut.wb_sel_MW[1:0]
+@22
+tb_processor.dut.wdata_MW[31:0]
+@28
+tb_processor.dut.rf_en_MW
+tb_processor.dut.br_taken
+[pattern_trace] 1
+[pattern_trace] 0

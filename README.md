@@ -1,7 +1,7 @@
 This repository contains the implementation of 3-stage Pipelined Processor based on RISC-V Instruction Set Architecture. Following is the brief description of the project:
 
 *For design diagram of 3-stage pipelined processor, see **[3-stage_pipelined_proc_design_diagram.png](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/blob/main/3-stage_pipelined_proc_design_diagram.png "3-stage_pipelined_proc_design_diagram.png")**
-or visit [draw.io](https://app.diagrams.net/#G1Q6_c2Uw8DhKzlROVleCqcefcnQ91zmgN "Design diagram"):*
+or visit [draw.io](https://app.diagrams.net/#G1Q6_c2Uw8DhKzlROVleCqcefcnQ91zmgN "Design diagram").*
 
 # Supported Instructions
 
@@ -53,7 +53,7 @@ There is no structural hazard both in case of 3-stage and 5-stage pipeline as in
 
 The processor's functionality has been tested against two assembly programs GCD and factorial. See inst.mem for factorial example. For GCD example, go to this [commit](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/tree/2e5b24f53889ed2949087df10a61bd21843f21f1 "see GCD example at this commit").
 
-# Compilation Guidelines
+# Compilation & Simulation Guidelines
 
 RTL can be compiled and simulated by just running ``compile.bat`` file which i've created in the same folder
 

@@ -35,7 +35,7 @@ CSRRW, MRET
 
 ### STRUCTURAL HAZARDS
 
-There is no structural hazard both in case of 3-stage and 5-stage pipeline as instruction memory and data memory are separate memories.
+There are no structural hazards in case of both 3-stage and 5-stage pipeline as instruction memory and data memory are separate memories.
 
 ### DATA HAZARDS
 

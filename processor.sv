@@ -134,7 +134,7 @@ module processor
         .select_line ( br_take_IF        ),
 
         // outputs
-        .out         ( new_pc         )
+        .out         ( new_pc            )
     );
 
     mux_2x1 mux_2x1_epc
@@ -346,7 +346,7 @@ module processor
         .br_type  ( br_type   ),
 
         // outputs
-        .br_taken ( br_taken )
+        .br_taken ( br_taken  )
     );
 
     // ---------------------------------------------------------------
@@ -482,13 +482,13 @@ module processor
     (
         // FORWARDING
         // inputs
-        .rs1_DE    ( rs1_DE   ),
-        .rs2_DE    ( rs2_DE   ),
-        .rd_MW     ( rd_MW    ),
-        .rf_en_MW  ( rf_en_MW ),
+        .rs1_DE    ( rs1_DE     ),
+        .rs2_DE    ( rs2_DE     ),
+        .rd_MW     ( rd_MW      ),
+        .rf_en_MW  ( rf_en_MW   ),
         // outputs
-        .forward_a ( forward_a ),
-        .forward_b ( forward_b ),
+        .forward_a ( forward_a  ),
+        .forward_b ( forward_b  ),
 
         // STALLING & FLUSHING
         // inputs
@@ -497,8 +497,8 @@ module processor
         .wb_sel_DE ( wb_sel_DE  ),
         .br_taken  ( br_take_DE ),
         // outputs
-        .stall_IF  ( stall_IF  ),
-        .flush_DE  ( flush_DE  )
+        .stall_IF  ( stall_IF   ),
+        .flush_DE  ( flush_DE   )
     );
     
 endmodule

@@ -1,6 +1,6 @@
 This repository contains the implementation of 3-stage Pipelined Processor based on RISC-V Instruction Set Architecture. Following is the brief description of the project:
 
-*For processor design diagram see “ **[3-stage_pipelined_proc_design_diagram.png](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/blob/main/3-stage_pipelined_proc_design_diagram.png "3-stage_pipelined_proc_design_diagram.png")** ”
+*For design diagram of 3-stage pipelined processor, see **[3-stage_pipelined_proc_design_diagram.png](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/blob/main/3-stage_pipelined_proc_design_diagram.png "3-stage_pipelined_proc_design_diagram.png")**
 or visit [draw.io](https://app.diagrams.net/#G1Q6_c2Uw8DhKzlROVleCqcefcnQ91zmgN "Design diagram"):*
 
 # Supported Instructions
@@ -30,6 +30,24 @@ or visit [draw.io](https://app.diagrams.net/#G1Q6_c2Uw8DhKzlROVleCqcefcnQ91zmgN 
 ### CSR INSTRUCTIONS:
 
 CSRRW, MRET
+
+# Pipelining Hazards: 3-Stage vs 5-Stage Pipeline
+
+### STRUCTURAL HAZARDS
+
+There is no structural hazard both in case of 3-stage and 5-stage pipeline as instruction memory and data memory are separate memories.
+
+### DATA HAZARDS
+
+**3-stage:** Data Hazard between Current Instrucion and One-Previous Instruction is handled through *forwarding* from Memory-Writeback stage to Decode-Execute stage. In case of load instuction 1 stall cycle is necessary.
+
+**5-stage:** Data Hazards between Current Instruction and One-Previous Instruction AND Current Instruction and 2nd-Previous Instruction is handled through *forwarding* from Memory to Execute stage and Writeback to Execute stage. In case of load instuction 1 stall cycle is necessary.
+
+### CONTROL HAZARDS
+
+**3-stage:** Only Decode-Execute stage is flushed In case of branch and jump instructions, as the target address is known after Decode-Execute stage.
+
+**5-stage:** In case of 5-stage pipeline, Decode and Execute stages are flushed, as the target address is known after execute stage.
 
 # Compilation Guidelines
 

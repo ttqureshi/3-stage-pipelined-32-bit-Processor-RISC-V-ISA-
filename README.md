@@ -31,6 +31,10 @@ or visit [draw.io](https://app.diagrams.net/#G1Q6_c2Uw8DhKzlROVleCqcefcnQ91zmgN 
 
 CSRRW, MRET
 
+# Interrupt Handling
+
+The processor embeds functionality to handle timer interrupts. When a timer interrupt occurs, it is registered in the ``mip`` register and the value of Program Counter (PC) is stored in ``mepc`` register. The interrupt service routine provided by the programmer is then called and at the end of service routine ``mret`` instruction sets the PC equal to the value stored in ``mepc`` register and the execution of program resumes from where the interrupt occurred.
+
 # Pipelining Hazards: 3-Stage vs 5-Stage Pipeline
 
 ### STRUCTURAL HAZARDS

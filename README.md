@@ -39,9 +39,9 @@ There are no structural hazards in case of both 3-stage and 5-stage pipeline as 
 
 ### DATA HAZARDS
 
-**3-stage:** Data Hazard between Current Instrucion and One-Previous Instruction is handled through *forwarding* from Memory-Writeback stage to Decode-Execute stage. In case of load instuction 1 stall cycle is necessary.
+**3-stage:** Data Hazard between Current Instrucion and 1st-Previous Instruction is handled through *forwarding* from Memory-Writeback stage to Decode-Execute stage. In case of load instuction, 1 stall cycle is necessary.
 
-**5-stage:** Data Hazards between Current Instruction and One-Previous Instruction AND Current Instruction and 2nd-Previous Instruction is handled through *forwarding* from Memory to Execute stage and Writeback to Execute stage. In case of load instuction 1 stall cycle is necessary.
+**5-stage:** Data Hazards between Current Instruction and 1st-Previous Instruction AND Current Instruction and 2nd-Previous Instruction is handled through *forwarding* from Memory to Execute stage and Writeback to Execute stage. In case of load instuction, 1 stall cycle is necessary.
 
 ### CONTROL HAZARDS
 
@@ -51,7 +51,7 @@ There are no structural hazards in case of both 3-stage and 5-stage pipeline as 
 
 # Processor's Functionality Testing
 
-The processor's functionality has been tested against two assembly programs GCD and factorial. See inst.mem for factorial example. For GCD example, go to this [commit](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/tree/2e5b24f53889ed2949087df10a61bd21843f21f1 "see GCD example at this commit").
+The processor's functionality has been tested against two assembly programs GCD and factorial. See ``inst.mem`` for factorial example. For GCD example, go to this [commit](https://github.com/ttqureshi/3-stage-pipelined-32-bit-Processor-RISC-V-ISA-/tree/2e5b24f53889ed2949087df10a61bd21843f21f1 "see GCD example at this commit").
 
 # Compilation & Simulation Guidelines
 
